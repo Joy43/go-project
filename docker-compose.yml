@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:13
+    container_name: goauthdb
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: goauthdb
+    ports:
+      - "5442:5432"
+    networks:
+      - goauth_network
+
+  goapp:
+    build: .
+    container_name: goauthapp
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/goauthdb?sslmode=disable
+      - GOAUTH_JWT_SECRET=your_jwt_secret_key
+      - GOAUTH_JWT_EXPIRATION=3600
+      - GOAUTH_LOG_LEVEL=info
+      - GOAUTH_BCRYPT_COST=12
+      - GOAUTH_RATE_LIMIT=100
+      - GOAUTH_RATE_LIMIT_DURATION=60
+    depends_on:
+      - db
+    networks:
+      - goauth_network
+
+networks:
+  goauth_network:
+    driver: bridge
