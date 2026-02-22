@@ -8,14 +8,7 @@ import (
 	"net/http"
 )
 
-// import (
-// 	"encoding/json"
-// 	"net/http"
 
-// 	"github.com/yourusername/go-jwt-auth/utils"
-// 	"github.com/yourusername/go-jwt-auth/models"
-// 	"github.com/yourusername/go-jwt-auth/config"
-// )
 
 // Register user
 func Register(w http.ResponseWriter, r *http.Request) {

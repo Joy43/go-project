@@ -7,12 +7,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// import (
-// 	"go-jwt-auth/controllers"
-// 	"net/http"
 
-// 	"github.com/gorilla/mux"
-// )
 
 // SetRoutes sets up the routes for the application
 func SetRoutes() *mux.Router {
