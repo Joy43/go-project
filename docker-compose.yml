@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:13
+    image: postgres:17
     container_name: goauthdb
     environment:
       POSTGRES_USER: postgres
@@ -16,14 +16,8 @@ services:
     container_name: goauthapp
     ports:
       - "8080:8080"
-    environment:
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/goauthdb?sslmode=disable
-      - GOAUTH_JWT_SECRET=your_jwt_secret_key
-      - GOAUTH_JWT_EXPIRATION=3600
-      - GOAUTH_LOG_LEVEL=info
-      - GOAUTH_BCRYPT_COST=12
-      - GOAUTH_RATE_LIMIT=100
-      - GOAUTH_RATE_LIMIT_DURATION=60
+    env_file:
+      - .env
     depends_on:
       - db
     networks:
