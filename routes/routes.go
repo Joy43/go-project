@@ -5,23 +5,41 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
-
-
-// SetRoutes sets up the routes for the application
 func SetRoutes() *mux.Router {
+
 	r := mux.NewRouter()
 
-	// Root route ("/") handling request to the home page
+	// Redirect /docs → /docs/index.html
+	r.HandleFunc("/docs", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/docs/index.html", http.StatusMovedPermanently)
+	})
+
+	// Swagger UI
+	r.PathPrefix("/docs/").Handler(httpSwagger.WrapHandler)
+
+	// Root route
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Welcome to the Go JWT Auth API!"))
 	}).Methods("GET")
 
-	// Other routes, such as register, login, etc.
+	// Auth routes
 	r.HandleFunc("/register", controllers.Register).Methods("POST")
 	r.HandleFunc("/login", controllers.Login).Methods("POST")
+
+	// Profile routes
+	r.HandleFunc("/profile", controllers.GetProfile).Methods("GET")
+	r.HandleFunc("/profile", controllers.UpdateProfile).Methods("PUT")
+	r.HandleFunc("/profile", controllers.DeleteAccount).Methods("DELETE")
+
+	// Other routes
+	r.HandleFunc("/logout", controllers.Logout).Methods("POST")
+	r.HandleFunc("/admin/users", controllers.GetAllUsers).Methods("GET")
+	r.HandleFunc("/posts", controllers.CreatePost).Methods("POST")
+	r.HandleFunc("/comments", controllers.CreateComment).Methods("POST")
 
 	return r
 }
