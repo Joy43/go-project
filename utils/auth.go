@@ -8,7 +8,7 @@ import (
 
 var jwtKey = []byte("secret_key")
 
-// HashPassword hashes a plain password
+// -----HashPassword hashes a plain password -------
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -17,13 +17,13 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), nil
 }
 
-// ComparePassword compares hashed password with the plaintext password
+// --------- ComparePassword compares hashed password with the plaintext password ---------
 func ComparePassword(password, hashed string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hashed), []byte(password))
 	return err == nil
 }
 
-// GenerateJWT generates a JWT token
+// -------- GenerateJWT creates a JWT token ---------
 func GenerateJWT(username string) (string, error) {
 	claims := &jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
